@@ -4,6 +4,10 @@ A complete search typeahead assignment demonstrating low-latency prefix lookup, 
 
 ![Search typeahead demo](docs/Screenshot%202026-06-22%20at%2012.52.36 PM.png)
 
+## Project Report
+
+- (docs/report.pdf)
+
 ## Quick start
 
 Requirements: Node.js 20 or newer.
@@ -102,17 +106,66 @@ curl -X POST http://localhost:3000/search \
 curl -X POST http://localhost:3000/flush
 ```
 
-## Core decisions
+## Design Choices and Trade-offs
 
-- **Primary store lookup:** SQLite uses its primary-key index to restrict candidates to the normalized prefix range, then returns the highest-count 10.
-- **Consistent hashing:** Three Redis nodes own keys through a 450-point MD5 ring. Adding a fourth node remaps only the affected ring ranges rather than nearly every key.
-- **Mode-safe cache:** Keys include ranking mode (`suggest:count:iph`), preventing historical and trending rankings from contaminating each other.
-- **Trending:** Ten 30-second buckets form a five-minute window. Recent counts decay by `0.9^age`. Both historical and recent values are normalized before applying the 40/60 weighting.
-- **Batching:** Repeated searches are aggregated by normalized query. A flush occurs after 50 unique queries or five seconds. One SQLite transaction updates all unique rows.
-- **Consistency:** Reads are eventually consistent by up to the flush interval. Abrupt process failure can lose buffered events; production would place a durable log or queue before the aggregator.
-- **Deployment modes:** `CACHE_BACKEND=redis` uses three external Redis processes; `CACHE_BACKEND=memory` preserves a simple local/test fallback.
+### Primary Store Lookup
+- SQLite serves as the primary data store.
+- Prefix-based searches use indexed lookups to reduce the search space.
+- The database returns the top 10 suggestions ranked by historical query frequency.
 
+### Distributed Cache
+- Three Redis instances are used as a distributed cache layer.
+- Keys are assigned using a 450-point MD5 consistent hash ring.
+- Adding or removing cache nodes affects only a small subset of keys, minimizing cache redistribution.
 
-## Project report
+### Mode-Safe Caching
+- Cache keys include the ranking mode identifier.
+- Example:
+  - `suggest:count:*` → Historical ranking
+  - `suggest:trend:*` → Trending ranking
+- Prevents different ranking strategies from overwriting or polluting each other's cached results.
 
-- [Final Report](docs/report.pdf)
+### Trending Ranking
+- Recent search activity is tracked using 10 buckets of 30 seconds each.
+- The system maintains a rolling 5-minute window.
+- Older events receive exponentially lower weight using:
+
+  ```text
+  score = 0.9^age
+  ```
+
+- Historical and recent popularity scores are normalized and combined using:
+  - 40% Historical Score
+  - 60% Trending Score
+
+### Batched Writes
+- Search events are aggregated by normalized query text.
+- Flush conditions:
+  - 50 unique queries accumulated, or
+  - 5 seconds elapsed
+- All updates are written in a single SQLite transaction, reducing database overhead.
+
+### Consistency Model
+- The system follows an eventually consistent model.
+- Updates become visible after the next batch flush.
+- Maximum staleness is bounded by the flush interval.
+- A sudden process failure may result in the loss of buffered events.
+- In production, a durable queue (Kafka, RabbitMQ, etc.) or write-ahead log should be added before the aggregator.
+
+### Deployment Modes
+
+#### Redis Mode
+```bash
+CACHE_BACKEND=redis
+```
+
+- Uses three external Redis processes.
+- Suitable for distributed and production deployments.
+
+#### Memory Mode
+```bash
+CACHE_BACKEND=memory
+```
+
+- Uses an in-memory cache.
+- Ideal for local development, testing, and debugging.
