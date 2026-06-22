@@ -1,0 +1,188 @@
+{
+  "measuredAt": "2026-06-21T21:42:10.150Z",
+  "environment": {
+    "node": "v22.18.0",
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "requestLatencyMs": {
+    "coldP95": 2.875,
+    "warmP50": 0.203,
+    "warmP95": 0.369,
+    "warmP99": 0.506
+  },
+  "serverMetrics": {
+    "totalRequests": 313,
+    "suggestionSamples": 210,
+    "latencyMs": {
+      "p50": 0.012,
+      "p95": 0.07,
+      "p99": 0.146
+    },
+    "searchSubmissions": 100,
+    "batchFlushes": 1,
+    "bufferedEventsFlushed": 100,
+    "cache": {
+      "hits": 200,
+      "misses": 10,
+      "evictions": 0,
+      "size": 10,
+      "hitRate": 95.24,
+      "backend": "memory",
+      "nodes": [
+        {
+          "id": "cache-node-0",
+          "size": 4,
+          "hits": 80,
+          "misses": 4,
+          "evictions": 0
+        },
+        {
+          "id": "cache-node-1",
+          "size": 2,
+          "hits": 40,
+          "misses": 2,
+          "evictions": 0
+        },
+        {
+          "id": "cache-node-2",
+          "size": 1,
+          "hits": 20,
+          "misses": 1,
+          "evictions": 0
+        },
+        {
+          "id": "cache-node-3",
+          "size": 3,
+          "hits": 60,
+          "misses": 3,
+          "evictions": 0
+        }
+      ],
+      "distribution": {
+        "cache-node-3": 23.84,
+        "cache-node-0": 25.34,
+        "cache-node-2": 23.83,
+        "cache-node-1": 26.99
+      }
+    },
+    "database": {
+      "reads": 12,
+      "transactions": 1,
+      "rowsUpdated": 2
+    },
+    "batch": {
+      "bufferSize": 0,
+      "writeReductionRatio": 50
+    },
+    "dataset": {
+      "rows": 120000,
+      "source": "Wikimedia Pageviews (CC0)"
+    }
+  },
+  "rankingDemo": {
+    "note": "Popular mode uses overall count; trend mode incorporates recent POST /search activity.",
+    "popular": {
+      "suggestions": [
+        {
+          "query": "Apple Network Server",
+          "count": 2956
+        },
+        {
+          "query": "Apple",
+          "count": 128
+        },
+        {
+          "query": "App Store (Apple)",
+          "count": 109
+        },
+        {
+          "query": "Apple Inc.",
+          "count": 98
+        },
+        {
+          "query": "Appalachian Mountains",
+          "count": 33
+        },
+        {
+          "query": "Apple Watch",
+          "count": 29
+        },
+        {
+          "query": "Apple TV",
+          "count": 26
+        },
+        {
+          "query": "Apple M1",
+          "count": 25
+        },
+        {
+          "query": "Apple TV+",
+          "count": 24
+        },
+        {
+          "query": "Apple M4",
+          "count": 22
+        }
+      ],
+      "cached": false,
+      "latencyMs": 0.23
+    },
+    "trending": {
+      "suggestions": [
+        {
+          "query": "Apple",
+          "count": 128,
+          "trendScore": 0.813878
+        },
+        {
+          "query": "Apple Network Server",
+          "count": 2956,
+          "trendScore": 0.35172
+        },
+        {
+          "query": "App Store (Apple)",
+          "count": 109,
+          "trendScore": 0.206865
+        },
+        {
+          "query": "Apple Inc.",
+          "count": 98,
+          "trendScore": 0.202229
+        },
+        {
+          "query": "Appalachian Mountains",
+          "count": 33,
+          "trendScore": 0.155193
+        },
+        {
+          "query": "Apple Watch",
+          "count": 29,
+          "trendScore": 0.149685
+        },
+        {
+          "query": "Apple TV",
+          "count": 26,
+          "trendScore": 0.145048
+        },
+        {
+          "query": "Apple M1",
+          "count": 25,
+          "trendScore": 0.143387
+        },
+        {
+          "query": "Apple TV+",
+          "count": 24,
+          "trendScore": 0.141661
+        },
+        {
+          "query": "Apple M4",
+          "count": 22,
+          "trendScore": 0.137991
+        }
+      ],
+      "cached": false,
+      "latencyMs": 5.466
+    }
+  }
+}

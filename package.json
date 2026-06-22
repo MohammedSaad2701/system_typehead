@@ -1,0 +1,30 @@
+{
+  "name": "search-typeahead-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A search typeahead system using Wikimedia Pageviews, SQLite, consistent hashing, trending ranking, and batch writes.",
+  "main": "server/index.js",
+  "scripts": {
+    "download-data": "node dataset/import-wikimedia.js",
+    "setup": "node dataset/import-wikimedia.js && node server/db/loader.js --replace",
+    "start": "node server/index.js",
+    "start:redis": "CACHE_BACKEND=redis node server/index.js",
+    "redis:up": "docker compose up -d redis-1 redis-2 redis-3",
+    "redis:down": "docker compose down",
+    "docker:up": "docker compose up --build",
+    "dev": "node --watch server/index.js",
+    "test": "node --test --test-concurrency=1",
+    "benchmark": "node scripts/benchmark.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.10.0",
+    "express": "^5.1.0",
+    "redis": "^5.12.1"
+  },
+  "devDependencies": {
+    "supertest": "^7.1.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

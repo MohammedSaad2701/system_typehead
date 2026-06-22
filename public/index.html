@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Fast search suggestions with live popularity signals">
+  <title>Signal Search</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <main class="page-shell">
+    <header class="hero">
+      <div class="eyebrow"><span class="pulse-dot"></span> Live search intelligence</div>
+      <h1>Search feels instant<br><span>when signal leads.</span></h1>
+      <p>A crisp typeahead workspace that blends popular queries, fresh momentum, and fast cached responses.</p>
+    </header>
+
+    <section class="search-region" aria-label="Search">
+      <div class="mode-switch" role="group" aria-label="Suggestion ranking">
+        <button class="mode active" data-mode="count">Most used</button>
+        <button class="mode" data-mode="trend">Rising now</button>
+      </div>
+      <form id="search-form" autocomplete="off">
+        <div class="search-box">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/></svg>
+          <input
+            id="search-input"
+            name="query"
+            type="search"
+            placeholder="Try iphone, climate, design, or anything curious"
+            maxlength="200"
+            aria-label="Search query"
+            aria-autocomplete="list"
+            aria-controls="suggestions"
+            aria-expanded="false"
+            autofocus
+          >
+          <div id="input-loader" class="spinner hidden" aria-hidden="true"></div>
+          <button class="search-button" type="submit">Explore</button>
+        </div>
+        <div id="suggestions" class="suggestions hidden" role="listbox"></div>
+      </form>
+      <div id="search-status" class="search-status" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="dashboard">
+      <article class="panel trending-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="panel-kicker">Fresh demand</span>
+            <h2>Rising searches</h2>
+          </div>
+          <button id="refresh-trending" class="icon-button" aria-label="Refresh rising searches">↻</button>
+        </div>
+        <div id="trending-list" class="trending-list">
+          <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        </div>
+      </article>
+
+      <article class="panel metrics-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="panel-kicker">Response health</span>
+            <h2>Live performance</h2>
+          </div>
+          <span id="cache-backend-badge" class="live-badge">Ready</span>
+        </div>
+        <div class="metric-grid">
+          <div class="metric"><span>Tail speed</span><strong id="metric-p95">-</strong><small>p95 in milliseconds</small></div>
+          <div class="metric"><span>Cache lift</span><strong id="metric-hit-rate">-</strong><small id="metric-cache-nodes">across active nodes</small></div>
+          <div class="metric"><span>Write savings</span><strong id="metric-reduction">-</strong><small>batched updates</small></div>
+          <div class="metric"><span>Query library</span><strong id="metric-dataset">-</strong><small>indexed phrases</small></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel cache-panel">
+      <div class="panel-heading">
+        <div>
+          <span class="panel-kicker">Routing map</span>
+          <h2>Cache path</h2>
+        </div>
+        <span id="route-key" class="route-key">Type to reveal the serving node</span>
+      </div>
+      <div id="cache-nodes" class="cache-nodes">
+        <div class="cache-node"><span>N0</span><strong>Route node 0</strong><small>idle</small></div>
+        <div class="cache-node"><span>N1</span><strong>Route node 1</strong><small>idle</small></div>
+        <div class="cache-node"><span>N2</span><strong>Route node 2</strong><small>idle</small></div>
+        <div class="cache-node"><span>N3</span><strong>Route node 3</strong><small>idle</small></div>
+      </div>
+    </section>
+  </main>
+  <div id="toast" class="toast" role="alert"></div>
+  <script src="/app.js" defer></script>
+</body>
+</html>

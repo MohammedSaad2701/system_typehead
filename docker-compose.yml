@@ -1,0 +1,82 @@
+services:
+  redis-1:
+    image: redis:7.4-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-1-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 1s
+      retries: 15
+
+  redis-2:
+    image: redis:7.4-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis-2-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 1s
+      retries: 15
+
+  redis-3:
+    image: redis:7.4-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6381:6379"
+    volumes:
+      - redis-3-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 1s
+      retries: 15
+
+  app:
+    build: .
+    environment:
+      CACHE_BACKEND: redis
+      REDIS_URLS: redis://redis-1:6379,redis://redis-2:6379,redis://redis-3:6379
+      DB_PATH: /app/data/typeahead.db
+      NODE_ENV: production
+      PORT: 3000
+    command:
+      [
+        "sh",
+        "-c",
+        "if [ ! -f /app/data/typeahead.db ]; then npm run setup; fi; npm start"
+      ]
+    ports:
+      - "3000:3000"
+    volumes:
+      - app-data:/app/data
+    depends_on:
+      redis-1:
+        condition: service_healthy
+      redis-2:
+        condition: service_healthy
+      redis-3:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/stats').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+        ]
+      interval: 5s
+      timeout: 2s
+      retries: 20
+
+volumes:
+  redis-1-data:
+  redis-2-data:
+  redis-3-data:
+  app-data:

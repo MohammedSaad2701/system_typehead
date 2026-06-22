@@ -1,0 +1,13 @@
+{
+  "name": "Wikimedia Pageviews",
+  "sourceUrl": "https://dumps.wikimedia.org/other/pageviews/2025/2025-01/pageviews-20250101-000000.gz",
+  "documentation": "https://dumps.wikimedia.org/other/pageviews/readme.html",
+  "license": "CC0 1.0",
+  "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "sourcePeriod": "2025-01-01 00:00 UTC hourly aggregate",
+  "projectFilter": "en.wikipedia.org desktop (domain code: en)",
+  "transformation": "page_title becomes query; count_views becomes count; top entries retained by count",
+  "rows": 120000,
+  "sourceEnglishRowsRead": 904976,
+  "generatedAt": "2026-06-21T12:37:58.358Z"
+}
