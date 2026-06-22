@@ -112,7 +112,6 @@ curl -X POST http://localhost:3000/flush
 - **Consistency:** Reads are eventually consistent by up to the flush interval. Abrupt process failure can lose buffered events; production would place a durable log or queue before the aggregator.
 - **Deployment modes:** `CACHE_BACKEND=redis` uses three external Redis processes; `CACHE_BACKEND=memory` preserves a simple local/test fallback.
 
-For the detailed walkthrough and viva notes, see [docs/architecture.md](docs/architecture.md). Benchmark instructions and interpretation are in [docs/performance-report.md](docs/performance-report.md). A direct requirement mapping is provided in [docs/assignment-compliance.md](docs/assignment-compliance.md).
 
 ## Project report
 
