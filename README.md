@@ -116,4 +116,4 @@ For the detailed walkthrough and viva notes, see [docs/architecture.md](docs/arc
 
 ## Project report
 
-- [Submission-ready PDF report](docs/Search-Typeahead-Project-Report.pdf)
+- [Final Report](docs/report.pdf)
