@@ -2,7 +2,7 @@
 
 A complete search typeahead assignment demonstrating low-latency prefix lookup, distributed Redis caching with client-side consistent hashing, recency-aware trending, asynchronous batch writes, and a clean responsive interface.
 
-![Search typeahead demo]()
+![Search typeahead demo](docs/Screenshot%202026-06-22%20at%2012.52.36 PM.png)
 
 ## Quick start
 
