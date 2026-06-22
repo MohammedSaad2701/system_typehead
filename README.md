@@ -75,19 +75,7 @@ The original compressed source is roughly 46 MB. `npm run download-data` caches 
 
 ## Architecture
 
-```mermaid
-flowchart LR
-  UI[Vanilla JS UI] --> API[Express API]
-  API --> RING[Consistent-hash router]
-  RING --> R1[Redis 1 :6379]
-  RING --> R2[Redis 2 :6380]
-  RING --> R3[Redis 3 :6381]
-  R1 & R2 & R3 -->|miss| DB[(SQLite primary store)]
-  API --> TREND[10-bucket trending window]
-  API --> BUFFER[Aggregating write buffer]
-  BUFFER -->|5 s or 50 unique queries| DB
-  BUFFER --> CACHE
-```
+![architecture](docs/Screenshot%202026-06-22%20at%208.04.04 PM.png)
 
 The Redis deployment routes every cache key through a custom MD5 consistent-hashing ring with 150 virtual nodes per Redis server. The selected server is checked before falling back to SQLite. Search submissions are acknowledged immediately, recorded in the recent-activity window, and aggregated before one transactional database flush.
 
